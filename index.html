@@ -9,11 +9,11 @@
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quiz App</title>
-    <script type="module" crossorigin src="/quiz-app/assets/index-bgL6xFtx.js"></script>
-    <link rel="stylesheet" crossorigin href="/quiz-app/assets/index-DYm4XS43.css">
+    <script type="module" crossorigin src="/quiz-app/assets/index-B_jN3S6g.js"></script>
+    <link rel="stylesheet" crossorigin href="/quiz-app/assets/index-rHubfpOE.css">
   </head>
-  <body class="relative">
-    <span class="text-white absolute top-5 right-5"
+  <body class="relative hidden">
+    <span class="text-white text-lg absolute top-5 right-5"
       >Current point: <span id="current-point">0</span></span
     >
     <main
@@ -24,14 +24,23 @@
         class="h-fit w-fit max-w-lg flex flex-col p-5 gap-4 bg-sky-600 rounded-2xl shadow-xl/30"
       >
         <h1 id="question-text" class="text-2xl font-bold"></h1>
-        <ul
-          id="answer-text"
-          class="flex flex-col justify-center items-center gap-3"
-        >
-          <li data-index="0" class="cursor-pointer"></li>
-          <li data-index="1" class="cursor-pointer"></li>
-          <li data-index="2" class="cursor-pointer"></li>
-          <li data-index="3" class="cursor-pointer"></li>
+        <ul id="answer-text" class="grid grid-cols-2 gap-3">
+          <li
+            class="h-20 flex pl-4 items-center bg-sky-500 hover:bg-sky-700 duration-300 ease-in-out cursor-pointer rounded-2xl"
+            data-index="0"
+          ></li>
+          <li
+            class="h-20 flex pl-4 items-center bg-sky-500 hover:bg-sky-700 cursor-pointer rounded-2xl"
+            data-index="1"
+          ></li>
+          <li
+            class="h-20 flex pl-4 items-center bg-sky-500 hover:bg-sky-700 cursor-pointer rounded-2xl"
+            data-index="2"
+          ></li>
+          <li
+            class="h-20 flex pl-4 items-center bg-sky-500 hover:bg-sky-700 cursor-pointer rounded-2xl"
+            data-index="3"
+          ></li>
         </ul>
       </div>
     </main>
