@@ -1,5 +1,4 @@
 import "./style.css";
-import Swal from "sweetalert2";
 
 // const Swal = require("sweetalert2");
 const questionText = document.getElementById("question-text");
