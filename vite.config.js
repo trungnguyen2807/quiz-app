@@ -10,7 +10,7 @@ export default defineConfig({
     rollupOptions: {
       external: [
         // Add the name of the module that the warning specifies here:
-        "name-of-the-problematic-module",
+        "sweetalert2",
         // Example for React/Vue if needed:
         "react",
         "vue",
@@ -18,7 +18,7 @@ export default defineConfig({
       output: {
         // You may also need to configure globals if the module is a UMD/IIFE
         globals: {
-          "name-of-the-problematic-module": "ModuleNameGlobal",
+          sweetalert2: "ModuleNameGlobal",
         },
       },
     },
