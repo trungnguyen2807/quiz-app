@@ -46,12 +46,40 @@ const answers = [
 ];
 let currentPoint = 0;
 let currentQuestionIndex = 0;
+let statusOfGame = "";
 function resetGame() {
   currentPoint = 0;
   currentQuestionIndex = 0;
   currentPointText.innerText = currentPoint;
   renderQuestion(currentQuestionIndex);
   return;
+}
+function updateStyles(element, isCorrect, correctAnswerElement) {
+  if (isCorrect) {
+    element.classList.toggle("bg-sky-500");
+    element.classList.toggle("hover:bg-sky-700");
+    element.classList.add("bg-green-500");
+    setTimeout(() => {
+      element.classList.toggle("bg-sky-500");
+      element.classList.toggle("hover:bg-sky-700");
+      element.classList.remove("bg-green-500");
+    }, 3000);
+  } else {
+    correctAnswerElement.classList.toggle("bg-sky-500");
+    correctAnswerElement.classList.toggle("hover:bg-sky-700");
+    correctAnswerElement.classList.add("bg-green-500");
+    element.classList.toggle("bg-sky-500");
+    element.classList.toggle("hover:bg-sky-700");
+    element.classList.add("bg-red-500");
+    setTimeout(() => {
+      correctAnswerElement.classList.toggle("bg-sky-500");
+      correctAnswerElement.classList.toggle("hover:bg-sky-700");
+      correctAnswerElement.classList.remove("bg-green-500");
+      element.classList.toggle("bg-sky-500");
+      element.classList.toggle("hover:bg-sky-700");
+      element.classList.remove("bg-red-500");
+    }, 3000);
+  }
 }
 function renderQuestion(index) {
   if (index >= questions.length) {
@@ -68,6 +96,7 @@ function renderQuestion(index) {
       preDeny: resetGame(),
     });
   } else {
+    statusOfGame = "active";
     const currentQuestion = questions[index];
     const currentAnswer = answers[index];
     questionText.innerText = currentQuestion;
@@ -80,34 +109,37 @@ function renderQuestion(index) {
 }
 function updateCurrentPoint(isCorrect) {
   isCorrect ? (currentPoint += 100) : (currentPoint -= 100);
+  currentQuestionIndex++;
   currentPointText.innerText = currentPoint;
 }
 answerText.addEventListener("click", (e) => {
   if (e.target.tagName === "LI") {
+    if (statusOfGame === "waiting") {
+      return;
+    }
+    statusOfGame = "waiting";
     const selectedAsnwerIndex = e.target.getAttribute("data-index");
     const correctAnswerIndex = answerText.getAttribute("data-correct-index");
     if (selectedAsnwerIndex == correctAnswerIndex) {
-      e.target.classList.add("text-green-500");
+      updateStyles(e.target, true, null);
       updateCurrentPoint(true);
-      currentQuestionIndex++;
       setTimeout(() => {
-        e.target.classList.remove("text-green-500");
         renderQuestion(currentQuestionIndex);
-      }, "1");
+      }, "3000");
     } else {
       const correctAnswers = answerText.querySelector(
         "li[data-index= '" + correctAnswerIndex + "' ]"
       );
-      correctAnswers.classList.add("text-green-500");
+      updateStyles(e.target, false, correctAnswers);
       updateCurrentPoint(false);
-      e.target.classList.add("text-red-500");
-      currentQuestionIndex++;
       setTimeout(() => {
-        correctAnswers.classList.remove("text-green-500");
-        e.target.classList.remove("text-red-500");
         renderQuestion(currentQuestionIndex);
-      }, "1");
+      }, "3000");
     }
   }
 });
 renderQuestion(currentQuestionIndex);
+
+window.onload = () => {
+  document.body.classList.remove("hidden");
+};
