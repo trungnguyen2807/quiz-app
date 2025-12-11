@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/quiz-app/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz App</title>
+    <script type="module" crossorigin src="/quiz-app/assets/index-CfK-BozH.js"></script>
+    <link rel="stylesheet" crossorigin href="/quiz-app/assets/index-DYm4XS43.css">
+  </head>
+  <body class="relative">
+    <span class="text-white absolute top-5 right-5"
+      >Current point: <span id="current-point">0</span></span
+    >
+    <main
+      class="w-full h-screen text-white bg-sky-800 flex flex-col items-center gap-10 pt-10"
+    >
+      <h1 class="text-6xl font-bold">Quiz About Vietnam</h1>
+      <div
+        class="h-fit w-fit max-w-lg flex flex-col p-5 gap-4 bg-sky-600 rounded-2xl shadow-xl/30"
+      >
+        <h1 id="question-text" class="text-2xl font-bold"></h1>
+        <ul
+          id="answer-text"
+          class="flex flex-col justify-center items-center gap-3"
+        >
+          <li data-index="0" class="cursor-pointer"></li>
+          <li data-index="1" class="cursor-pointer"></li>
+          <li data-index="2" class="cursor-pointer"></li>
+          <li data-index="3" class="cursor-pointer"></li>
+        </ul>
+      </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </body>
+</html>
