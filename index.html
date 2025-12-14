@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="hidden">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/quiz-app/vite.svg" />
@@ -9,15 +9,20 @@
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quiz App</title>
-    <script type="module" crossorigin src="/quiz-app/assets/index-B_jN3S6g.js"></script>
-    <link rel="stylesheet" crossorigin href="/quiz-app/assets/index-rHubfpOE.css">
+    <script>
+      // Remove the 'hidden' class to prevent FOUC
+      document.documentElement.classList.remove("hidden");
+    </script>
+    <script type="module" crossorigin src="/quiz-app/assets/index-DFelrp7K.js"></script>
+    <link rel="stylesheet" crossorigin href="/quiz-app/assets/index-DPTd9o0m.css">
   </head>
-  <body class="relative hidden">
-    <span class="text-white text-lg absolute top-5 right-5"
-      >Current point: <span id="current-point">0</span></span
+  <body class="relative text-white">
+    <span id="current-point" class="text-lg absolute top-5 right-5"
+      >Current point: 0</span
     >
     <main
-      class="w-full h-screen text-white bg-sky-800 flex flex-col items-center gap-10 pt-10"
+      id="app"
+      class="w-full h-screen bg-sky-800 flex flex-col items-center gap-10 pt-10"
     >
       <h1 class="text-6xl font-bold">Quiz About Vietnam</h1>
       <div
@@ -26,19 +31,19 @@
         <h1 id="question-text" class="text-2xl font-bold"></h1>
         <ul id="answer-text" class="grid grid-cols-2 gap-3">
           <li
-            class="h-20 flex pl-4 items-center bg-sky-500 hover:bg-sky-700 duration-300 ease-in-out cursor-pointer rounded-2xl"
+            class="h-20 flex pl-4 items-center bg-sky-500 hover:bg-sky-700 hover:duration-300 hover:ease-in-out cursor-pointer rounded-2xl"
             data-index="0"
           ></li>
           <li
-            class="h-20 flex pl-4 items-center bg-sky-500 hover:bg-sky-700 cursor-pointer rounded-2xl"
+            class="h-20 flex pl-4 items-center bg-sky-500 hover:bg-sky-700 hover:duration-300 hover:ease-in-out cursor-pointer rounded-2xl"
             data-index="1"
           ></li>
           <li
-            class="h-20 flex pl-4 items-center bg-sky-500 hover:bg-sky-700 cursor-pointer rounded-2xl"
+            class="h-20 flex pl-4 items-center bg-sky-500 hover:bg-sky-700 hover:duration-300 hover:ease-in-out cursor-pointer rounded-2xl"
             data-index="2"
           ></li>
           <li
-            class="h-20 flex pl-4 items-center bg-sky-500 hover:bg-sky-700 cursor-pointer rounded-2xl"
+            class="h-20 flex pl-4 items-center bg-sky-500 hover:bg-sky-700 hover:duration-300 hover:ease-in-out cursor-pointer rounded-2xl"
             data-index="3"
           ></li>
         </ul>
