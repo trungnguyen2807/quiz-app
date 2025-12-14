@@ -56,27 +56,21 @@ function resetGame() {
 }
 function updateStyles(element, isCorrect, correctAnswerElement) {
   if (isCorrect) {
-    element.classList.toggle("bg-sky-500");
-    element.classList.toggle("hover:bg-sky-700");
+    element.classList.remove("bg-sky-500", "hover:bg-sky-700");
     element.classList.add("bg-green-500");
     setTimeout(() => {
-      element.classList.toggle("bg-sky-500");
-      element.classList.toggle("hover:bg-sky-700");
+      element.classList.add("bg-sky-500", "hover:bg-sky-700");
       element.classList.remove("bg-green-500");
     }, 3000);
   } else {
-    correctAnswerElement.classList.toggle("bg-sky-500");
-    correctAnswerElement.classList.toggle("hover:bg-sky-700");
+    correctAnswerElement.classList.remove("bg-sky-500", "hover:bg-sky-700");
     correctAnswerElement.classList.add("bg-green-500");
-    element.classList.toggle("bg-sky-500");
-    element.classList.toggle("hover:bg-sky-700");
+    element.classList.remove("bg-sky-500", "hover:bg-sky-700");
     element.classList.add("bg-red-500");
     setTimeout(() => {
-      correctAnswerElement.classList.toggle("bg-sky-500");
-      correctAnswerElement.classList.toggle("hover:bg-sky-700");
+      correctAnswerElement.classList.add("bg-sky-500", "hover:bg-sky-700");
       correctAnswerElement.classList.remove("bg-green-500");
-      element.classList.toggle("bg-sky-500");
-      element.classList.toggle("hover:bg-sky-700");
+      element.classList.add("bg-sky-500", "hover:bg-sky-700");
       element.classList.remove("bg-red-500");
     }, 3000);
   }
@@ -108,9 +102,21 @@ function renderQuestion(index) {
   }
 }
 function updateCurrentPoint(isCorrect) {
-  isCorrect ? (currentPoint += 100) : (currentPoint -= 100);
+  isCorrect
+    ? ((currentPoint += 100),
+      currentPointText.classList.add("text-green-500"),
+      setTimeout(
+        () => currentPointText.classList.remove("text-green-500"),
+        3000
+      ))
+    : ((currentPoint -= 100),
+      currentPointText.classList.add("text-red-500"),
+      setTimeout(
+        () => currentPointText.classList.remove("text-red-500"),
+        3000
+      ));
   currentQuestionIndex++;
-  currentPointText.innerText = currentPoint;
+  currentPointText.innerText = `Current point: ${currentPoint}`;
 }
 answerText.addEventListener("click", (e) => {
   if (e.target.tagName === "LI") {
@@ -140,6 +146,6 @@ answerText.addEventListener("click", (e) => {
 });
 renderQuestion(currentQuestionIndex);
 
-window.onload = () => {
-  document.body.classList.remove("hidden");
-};
+// window.addEventListener("DOMContentLoaded", () => {
+//   document.body.classList.remove("opacity-0");
+// });
