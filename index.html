@@ -13,49 +13,49 @@
       // Remove the 'hidden' class to prevent FOUC
       document.documentElement.classList.remove("hidden");
     </script>
-    <script type="module" crossorigin src="/quiz-app/assets/index-EczdBXxo.js"></script>
-    <link rel="stylesheet" crossorigin href="/quiz-app/assets/index-B8PjaE4h.css">
+    <script type="module" crossorigin src="/quiz-app/assets/index-CdVtH8-y.js"></script>
+    <link rel="stylesheet" crossorigin href="/quiz-app/assets/index-BU_VJFJb.css">
   </head>
-  <body class="relative text-white">
-    <span id="current-point" class="text-lg absolute top-5 right-5"
+  <body class="relative text-white bg-sky-800">
+    <span id="current-point" class="absolute top-5 right-5 text-lg"
       >Current point: 0</span
     >
-    <span id="high-score" class="text-lg absolute top-5 left-5"></span>
+    <span id="high-score" class="absolute top-5 left-5 text-lg"></span>
     <main
       id="app"
-      class="w-full h-screen bg-sky-800 flex flex-col items-center gap-15 md:pt-12 pt-20"
+      class="flex h-screen w-full flex-col items-center gap-15 bg-sky-800 pt-20 md:pt-12"
     >
-      <h1 class="text-6xl font-bold">Quiz About Vietnam</h1>
+      <h1 class="text-5xl font-bold md:text-6xl">Quiz About Vietnam</h1>
       <button
         id="start-button"
-        class="bg-sky-500 w-60 h-30 text-2xl mt-10 px-10 py-5 rounded-2xl hover:bg-sky-700 hover:duration-300 hover:ease-in-out cursor-pointer"
+        class="mt-10 h-30 w-60 cursor-pointer rounded-2xl bg-sky-500 px-10 py-5 text-2xl hover:bg-sky-700 hover:duration-300 hover:ease-in-out"
       >
         Start
       </button>
       <div
         id="quiz-container"
-        class="relative h-fit w-fit max-w-lg hidden flex-col p-5 gap-4 bg-sky-600 rounded-2xl shadow-xl/30"
+        class="relative hidden h-fit w-fit max-w-lg flex-col gap-4 rounded-2xl bg-sky-600 p-5 shadow-xl/30"
       >
         <span
           id="countdown"
-          class="bg-sky-500 absolute -top-10 left-0 w-25 h-10 rounded-md flex items-center justify-center pointer-events-none"
+          class="pointer-events-none absolute -top-10 left-0 flex h-10 w-25 items-center justify-center rounded-md bg-sky-500"
         ></span>
         <h1 id="question-text" class="text-2xl font-bold"></h1>
         <ul id="answer-text" class="grid grid-cols-2 gap-3">
           <li
-            class="h-20 flex pl-4 items-center bg-sky-500 hover:bg-sky-700 hover:duration-300 hover:ease-in-out cursor-pointer rounded-2xl"
+            class="flex h-20 cursor-pointer items-center rounded-2xl bg-sky-500 pl-4 hover:bg-sky-700 hover:duration-300 hover:ease-in-out"
             data-index="0"
           ></li>
           <li
-            class="h-20 flex pl-4 items-center bg-sky-500 hover:bg-sky-700 hover:duration-300 hover:ease-in-out cursor-pointer rounded-2xl"
+            class="flex h-20 cursor-pointer items-center rounded-2xl bg-sky-500 pl-4 hover:bg-sky-700 hover:duration-300 hover:ease-in-out"
             data-index="1"
           ></li>
           <li
-            class="h-20 flex pl-4 items-center bg-sky-500 hover:bg-sky-700 hover:duration-300 hover:ease-in-out cursor-pointer rounded-2xl"
+            class="flex h-20 cursor-pointer items-center rounded-2xl bg-sky-500 pl-4 hover:bg-sky-700 hover:duration-300 hover:ease-in-out"
             data-index="2"
           ></li>
           <li
-            class="h-20 flex pl-4 items-center bg-sky-500 hover:bg-sky-700 hover:duration-300 hover:ease-in-out cursor-pointer rounded-2xl"
+            class="flex h-20 cursor-pointer items-center rounded-2xl bg-sky-500 pl-4 hover:bg-sky-700 hover:duration-300 hover:ease-in-out"
             data-index="3"
           ></li>
         </ul>
