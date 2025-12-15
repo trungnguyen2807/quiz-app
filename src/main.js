@@ -1,9 +1,12 @@
 import "./style.css";
 
-// const Swal = require("sweetalert2");
 const questionText = document.getElementById("question-text");
 const answerText = document.getElementById("answer-text");
 const currentPointText = document.getElementById("current-point");
+const highScoreText = document.getElementById("high-score");
+const countdownText = document.getElementById("countdown");
+const startButton = document.getElementById("start-button");
+const quizContainer = document.getElementById("quiz-container");
 const questions = [
   "1. Which city is the capital of Vietnam?",
   "2. In Vietmanese cuisine, what is a bánh mì closest to?",
@@ -44,18 +47,46 @@ const answers = [
     2,
   ],
 ];
+
 let currentPoint = 0;
 let currentQuestionIndex = 0;
 let statusOfGame = "";
+let highScore = localStorage.getItem("highScore");
+let countRightAnswers = 0;
+let countWrongAnswers = 0;
+let countdownInterval = null;
+let timeLeft = 15;
+// Initialize high score if not present
+if (!highScore) {
+  localStorage.setItem("highScore", 0);
+  highScore = 0;
+}
+highScoreText.innerText = `High Score: ${highScore}`;
+
+// Reset game to initial state
 function resetGame() {
+  if (currentPoint > highScore) {
+    highScore = currentPoint;
+    localStorage.setItem("highScore", highScore);
+    highScoreText.innerText = `High Score: ${highScore}`;
+  }
   currentPoint = 0;
   currentQuestionIndex = 0;
+  countRightAnswers = 0;
+  countWrongAnswers = 0;
   currentPointText.innerText = currentPoint;
+  startButton.classList.remove("hidden");
+  quizContainer.classList.add("hidden");
+  quizContainer.classList.remove("flex");
+  clearInterval(countdownInterval);
+  timeLeft = 15;
   renderQuestion(currentQuestionIndex);
   return;
 }
+// Update styles based on answer correctness
 function updateStyles(element, isCorrect, correctAnswerElement) {
   if (isCorrect) {
+    countRightAnswers++;
     element.classList.remove("bg-sky-500", "hover:bg-sky-700");
     element.classList.add("bg-green-500");
     setTimeout(() => {
@@ -63,6 +94,7 @@ function updateStyles(element, isCorrect, correctAnswerElement) {
       element.classList.remove("bg-green-500");
     }, 3000);
   } else {
+    countWrongAnswers++;
     correctAnswerElement.classList.remove("bg-sky-500", "hover:bg-sky-700");
     correctAnswerElement.classList.add("bg-green-500");
     element.classList.remove("bg-sky-500", "hover:bg-sky-700");
@@ -75,21 +107,27 @@ function updateStyles(element, isCorrect, correctAnswerElement) {
     }, 3000);
   }
 }
+// Render question, answers and countdown
 function renderQuestion(index) {
   if (index >= questions.length) {
     Swal.fire({
       title: "Done! Your score is " + currentPoint,
-      text: "Do you want to try again?",
+      text:
+        "You got " +
+        countRightAnswers +
+        " correct answers and " +
+        countWrongAnswers +
+        " wrong answers. Do you want to try again?",
       icon: "success",
       confirmButtonText: "Yah sure!",
       denyButtonText: "No, thanks",
       showDenyButton: true,
       allowOutsideClick: false,
       allowEscapeKey: false,
-      preConfirm: resetGame(),
-      preDeny: resetGame(),
     });
+    resetGame();
   } else {
+    // Render question and answers
     statusOfGame = "active";
     const currentQuestion = questions[index];
     const currentAnswer = answers[index];
@@ -99,8 +137,39 @@ function renderQuestion(index) {
     listOfAnswers.forEach((li, i) => {
       li.innerText = currentAnswer[i];
     });
+    // Reset countdown
+    timeLeft = 15;
+    countdownText.innerText = `Time: ${timeLeft}s`;
   }
 }
+// Handle countdown timer
+function startCountdown() {
+  countdownInterval = setInterval(() => {
+    if (timeLeft > 0) {
+      // Update countdown
+      timeLeft--;
+      countdownText.innerText = `Time: ${timeLeft}s`;
+    } else {
+      // Handle time out
+      statusOfGame = "waiting";
+      timeLeft = 15;
+      // Show corect answer
+      const correctAnswerIndex = answerText.getAttribute("data-correct-index");
+      const correctAnswerElement = answerText.querySelector(
+        "li[data-index= '" + correctAnswerIndex + "' ]"
+      );
+      // If time runs out
+      clearInterval(countdownInterval);
+      updateStyles(correctAnswerElement, true);
+      updateCurrentPoint(false);
+      setTimeout(() => {
+        renderQuestion(currentQuestionIndex);
+        startCountdown();
+      }, 3000);
+    }
+  }, 1000);
+}
+// Update current point and question index
 function updateCurrentPoint(isCorrect) {
   isCorrect
     ? ((currentPoint += 100),
@@ -118,6 +187,15 @@ function updateCurrentPoint(isCorrect) {
   currentQuestionIndex++;
   currentPointText.innerText = `Current point: ${currentPoint}`;
 }
+// Initial render
+startButton.addEventListener("click", () => {
+  startButton.classList.add("hidden");
+  quizContainer.classList.remove("hidden");
+  quizContainer.classList.add("flex");
+  renderQuestion(currentQuestionIndex);
+  startCountdown();
+});
+// Handle answer chosen
 answerText.addEventListener("click", (e) => {
   if (e.target.tagName === "LI") {
     if (statusOfGame === "waiting") {
@@ -126,11 +204,17 @@ answerText.addEventListener("click", (e) => {
     statusOfGame = "waiting";
     const selectedAsnwerIndex = e.target.getAttribute("data-index");
     const correctAnswerIndex = answerText.getAttribute("data-correct-index");
+
+    // Check answer
     if (selectedAsnwerIndex == correctAnswerIndex) {
       updateStyles(e.target, true, null);
       updateCurrentPoint(true);
+      // Stop countdown
+      clearInterval(countdownInterval);
+      timeLeft = 15;
       setTimeout(() => {
         renderQuestion(currentQuestionIndex);
+        startCountdown();
       }, "3000");
     } else {
       const correctAnswers = answerText.querySelector(
@@ -138,14 +222,13 @@ answerText.addEventListener("click", (e) => {
       );
       updateStyles(e.target, false, correctAnswers);
       updateCurrentPoint(false);
+      // Stop countdown
+      clearInterval(countdownInterval);
+      timeLeft = 15;
       setTimeout(() => {
         renderQuestion(currentQuestionIndex);
+        startCountdown();
       }, "3000");
     }
   }
 });
-renderQuestion(currentQuestionIndex);
-
-// window.addEventListener("DOMContentLoaded", () => {
-//   document.body.classList.remove("opacity-0");
-// });
