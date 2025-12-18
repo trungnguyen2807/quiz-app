@@ -1,1 +1,5 @@
 @import "tailwindcss";
+
+.button-hover-effect {
+    @apply hover:duration-300 hover:ease-in-out;
+}
