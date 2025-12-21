@@ -5,26 +5,15 @@ import {
   countdownText,
   hideQuizContainer,
   updateCountdown,
+  showCorrectAnswer,
+  updateHighScore,
+  updateStyles,
+  answerText,
+  updateCurrentPoint,
+  updateCurrentPointText,
+  startButton,
 } from "./ui.js";
-export const currentPointText = document.getElementById("current-point");
-// Update current point and question index
-export function updateCurrentPoint(isCorrect) {
-  isCorrect
-    ? ((gameState.currentPoint += 100),
-      currentPointText.classList.add("text-green-500"),
-      setTimeout(
-        () => currentPointText.classList.remove("text-green-500"),
-        3000
-      ))
-    : ((gameState.currentPoint -= 100),
-      currentPointText.classList.add("text-red-500"),
-      setTimeout(
-        () => currentPointText.classList.remove("text-red-500"),
-        3000
-      ));
-  gameState.currentQuestionIndex++;
-  currentPointText.innerText = `Current point: ${gameState.currentPoint}`;
-}
+import { loadQuestions } from "./quizService.js";
 // Check logic to render next question or end game
 export function renderQuestion(index) {
   if (index >= gameState.questions.length) {
@@ -42,13 +31,14 @@ export function resetGame() {
   if (gameState.currentPoint > gameState.highScore) {
     gameState.highScore = gameState.currentPoint;
     localStorage.setItem("highScore", gameState.highScore);
-    highScoreText.innerText = `High Score: ${gameState.highScore}`;
+    updateHighScore();
   }
+  updateHighScore();
   gameState.currentPoint = 0;
   gameState.currentQuestionIndex = 0;
   gameState.countRightAnswers = 0;
   gameState.countWrongAnswers = 0;
-  currentPointText.innerText = gameState.currentPoint;
+  updateCurrentPointText();
   hideQuizContainer();
   clearInterval(gameState.countdownInterval);
   gameState.timeLeft = 15;
@@ -82,4 +72,41 @@ export function stopCountdown() {
     renderQuestion(gameState.currentQuestionIndex);
     startCountdown();
   }, "3000");
+}
+// Handle answer selection
+export function handleAnswerSelection(e) {
+  if (e.target.tagName === "LI") {
+    if (gameState.statusOfGame === "waiting") {
+      return;
+    }
+    gameState.statusOfGame = "waiting";
+    const selectedAnswerIndex = e.target.getAttribute("data-index");
+    const correctAnswerIndex = answerText.getAttribute("data-correct-index");
+    // Check answer
+    if (selectedAnswerIndex == correctAnswerIndex) {
+      updateStyles(e.target, true, null);
+      updateCurrentPoint(true);
+      stopCountdown();
+    } else {
+      const correctAnswers = answerText.querySelector(
+        "li[data-index= '" + correctAnswerIndex + "' ]"
+      );
+      updateStyles(e.target, false, correctAnswers);
+      updateCurrentPoint(false);
+      stopCountdown();
+    }
+  }
+}
+// Initial render
+export async function init() {
+  try {
+    gameState.questions = await loadQuestions();
+    updateCurrentPointText();
+    updateHighScore();
+    startButton.disabled = false;
+    startButton.classList.remove("opacity-50", "cursor-not-allowed");
+    startButton.classList.add("cursor-pointer");
+  } catch (err) {
+    console.error(err);
+  }
 }

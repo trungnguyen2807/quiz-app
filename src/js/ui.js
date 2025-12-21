@@ -1,5 +1,4 @@
 import { gameState } from "./gameState.js";
-import { updateCurrentPoint } from "./logic.js";
 
 export const questionText = document.getElementById("question-text");
 export const answerText = document.getElementById("answer-text");
@@ -7,7 +6,26 @@ export const highScoreText = document.getElementById("high-score");
 export const countdownText = document.getElementById("countdown");
 export const startButton = document.getElementById("start-button");
 export const quizContainer = document.getElementById("quiz-container");
-
+export const currentPointText = document.getElementById("current-point");
+// Update current point and question index
+export function updateCurrentPoint(isCorrect) {
+  isCorrect
+    ? ((gameState.currentPoint += 100),
+      currentPointText.classList.add("text-green-500"),
+      setTimeout(
+        () => currentPointText.classList.remove("text-green-500"),
+        3000
+      ))
+    : ((gameState.currentPoint -= 100),
+      currentPointText.classList.add("text-red-500"),
+      setTimeout(
+        () => currentPointText.classList.remove("text-red-500"),
+        3000
+      ));
+  gameState.currentQuestionIndex++;
+  updateCurrentPointText();
+}
+// Update styles for correct and incorrect answers
 function updateIncorrectAnswersStyle(el, correctEl) {
   correctEl.classList.remove("bg-sky-500", "hover:bg-sky-700");
   correctEl.classList.add("bg-green-500");
@@ -39,7 +57,7 @@ export function showQuizContainer() {
   quizContainer.classList.remove("hidden");
   quizContainer.classList.add("flex");
 }
-
+// Show ending alert with score summary
 export function showEndingAlert() {
   Swal.fire({
     title: "Done! Your score is " + gameState.currentPoint,
@@ -88,11 +106,18 @@ export function renderQuestionUI(index) {
   });
 }
 // Show correct answer if time runs out
-export function shownCorrectAnswer() {
+export function showCorrectAnswer() {
   const correctAnswerIndex = answerText.getAttribute("data-correct-index");
   const correctAnswerElement = answerText.querySelector(
     "li[data-index= '" + correctAnswerIndex + "' ]"
   );
   updateStyles(correctAnswerElement, true, null);
   updateCurrentPoint(false);
+}
+
+export function updateHighScore() {
+  highScoreText.innerText = `High Score: ${gameState.highScore}`;
+}
+export function updateCurrentPointText() {
+  currentPointText.innerText = `Current point: ${gameState.currentPoint}`;
 }
